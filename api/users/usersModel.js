@@ -4,3 +4,7 @@ module.exports = {
     find,
     insert
 };
+
+function find() {
+    return db('users');
+};
