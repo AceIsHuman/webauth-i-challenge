@@ -18,6 +18,18 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.post('/login', async (req, res) => {
+    const { user, password } = req.body;
+    try {
+        const _user = await Users.findBy({ user }).first();
+        if (_user && bcrypt.compareSync(password, _user.password)) {
+            res.status(200).json({ message: "Logged in", cookie: _user.id });
+        } else res.status(401).json({ message: "You shall not pass!" });
+    } catch(error) {
+        res.status(500).json(error);
+    }
+});
+
 router.get('/', authRequired, async (req, res) => {
         const users = await Users.find();
         res.status(200).json(users);
